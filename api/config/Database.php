@@ -9,7 +9,11 @@ class Database
         $pdo = new PDO(
             'mysql:host=' . $config['host'] . ';dbname=' . $config['base'] . ';charset=utf8mb4',
             $config['usuario'],
-            $config['password']
+            $config['password'],
+            [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            ]
         );
 
         return $pdo;
