@@ -39,7 +39,19 @@ class CategoriaController{
         }
 
 
-        $id = Categoria::crear($nombre, $margen);
+        //Try catch para comprobar que no se esté guardando una categoría con un nombre ya existente
+        try {
+            $id = Categoria::crear($nombre, $margen);
+        } catch (PDOException $e) {
+            //errorInfo[1] es el número de error de MySQL. 1062 significa “valor repetido en una columna UNIQUE”.
+            if($e->errorInfo[1] === 1062){
+                http_response_code(409); //el pedido es válido, pero choca con algo que ya existe.
+                echo json_encode (['ok' => false, 'error' => 'Ya existe una categoría con ese nombre']);
+                return;
+            }
+            throw $e;
+        }
+        
 
         http_response_code(201);
 
