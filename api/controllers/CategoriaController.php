@@ -18,4 +18,16 @@ class CategoriaController{
         echo json_encode ($categorias);
     }
 
+    public static function crear(){
+        $nombre = trim($_POST['nombre'] ?? '');
+        $margen = $_POST['margen'] ?? '';
+
+        $id = Categoria::crear($nombre, $margen);
+
+        http_response_code(201);
+
+        echo json_encode(['ok' => true, 'id' => $id]);
+    }
+
+
 }

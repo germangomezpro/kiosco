@@ -16,4 +16,15 @@ class Categoria{
 
 
     }
+
+    //Función para agregar una cateogoría 
+    public static function crear($nombre, $margen){
+        $pdo = Database::conectar();
+
+        $consulta = $pdo->prepare('INSERT INTO categoria (nombre, margen) VALUES (:nombre, :margen)');
+        $consulta->execute([':nombre' => $nombre, ':margen' => $margen]);
+
+        return $pdo->lastInsertId();
+    }
+
 }

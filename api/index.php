@@ -20,7 +20,7 @@ switch($recurso){
             // El controlador le pide los datos al modelo y responde en JSON.
             CategoriaController::listar();
         }elseif($metodo === 'POST'){
-            echo json_encode(['mensaje' => 'Aca se va a crear una categoría']);
+            CategoriaController::crear();
         }else{
             http_response_code(405);
             echo json_encode(['error' => 'Método no permitido']);
