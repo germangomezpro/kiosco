@@ -1,12 +1,19 @@
 <?php
 
+//Avisamos al cliente que la respuesta del servidor es un archivo de texto en formato JSON y codificado en UTF 8
 header('Content-Type: application/json; charset=utf-8');
+
+// Traemos el Controlador de Categorias
+require_once __DIR__ . '/controllers/CategoriaController.php';
 
 $recurso = $_GET['recurso'] ?? '';
 
 switch($recurso){
     case 'categorias':
-        echo json_encode(['mensaje' => 'Acá van a ir las categorías']);
+        // Si pidieron categorías, le pasamos el pedido al controlador de categorías.
+        // El controlador le pide los datos al modelo y responde en JSON.
+        CategoriaController::listar();
+        
         break;
 
     default:
