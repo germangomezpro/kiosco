@@ -20,12 +20,31 @@ class CategoriaController{
 
     public static function crear(){
         $nombre = trim($_POST['nombre'] ?? '');
-        $margen = $_POST['margen'] ?? '';
+        $margen = trim($_POST['margen'] ?? '');
+        //Validación por si el cliente utiliza una coma en lugar de un punto en el decimal
+        $margen = str_replace(',', '.', $margen);
+        
+        //Validar que el nombre no llegue vacío
+        if($nombre === ''){
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => 'El nombre es obligatorio']);
+            return;
+        }
+
+        //Vaidar que el margen sea numérico y sea mayor a cero
+        if(!is_numeric($margen) || $margen < 0){
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => 'El margen tiene que ser mayor a cero y debe ser numérico']);
+            return;
+        }
+
 
         $id = Categoria::crear($nombre, $margen);
 
         http_response_code(201);
 
+
+        //Por ahora imprime acá el resultado.
         echo json_encode(['ok' => true, 'id' => $id]);
     }
 
