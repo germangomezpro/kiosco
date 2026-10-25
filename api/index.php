@@ -8,11 +8,24 @@ require_once __DIR__ . '/controllers/CategoriaController.php';
 
 $recurso = $_GET['recurso'] ?? '';
 
+//Identificamos el método por el que llega el pedido
+$metodo = $_SERVER['REQUEST_METHOD'];
+
+
 switch($recurso){
     case 'categorias':
-        // Si pidieron categorías, le pasamos el pedido al controlador de categorías.
-        // El controlador le pide los datos al modelo y responde en JSON.
-        CategoriaController::listar();
+
+        if($metodo === 'GET'){
+            // Si pidieron categorías, le pasamos el pedido al controlador de categorías.
+            // El controlador le pide los datos al modelo y responde en JSON.
+            CategoriaController::listar();
+        }elseif($metodo === 'POST'){
+            echo json_encode(['mensaje' => 'Aca se va a crear una categoría']);
+        }else{
+            http_response_code(405);
+            echo json_encode(['error' => 'Método no permitido']);
+        }
+        
         
         break;
 
