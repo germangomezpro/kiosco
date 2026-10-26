@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config/Database.php';
 
 class Categoria{
 
-    //Función para traer todas las categorías
+    //Método para traer todas las categorías
     public static function listar(){
 
         //Conectamos a la base de datos
@@ -17,7 +17,7 @@ class Categoria{
 
     }
 
-    //Función para agregar una cateogoría 
+    //Método para agregar una cateogoría 
     public static function crear($nombre, $margen){
         $pdo = Database::conectar();
 
@@ -27,7 +27,7 @@ class Categoria{
         return $pdo->lastInsertId();
     }
 
-    //Metodo para buscar
+    //Método para buscar
     public static function buscar($id){
         $pdo = Database::conectar();
 
@@ -36,5 +36,15 @@ class Categoria{
 
         return $consulta->fetch();
     }
+
+    //Método para modificar categoría
+    public static function modificar($id, $nombre, $margen){
+        $pdo = Database::conectar();
+
+        $consulta = $pdo->prepare('UPDATE categoria SET nombre = :nombre, margen = :margen WHERE id = :id');
+        $consulta->execute([':id' => $id, ':nombre' => $nombre, ':margen' => $margen]);
+
+    }
+
 
 }

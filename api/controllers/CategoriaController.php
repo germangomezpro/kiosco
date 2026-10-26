@@ -24,19 +24,15 @@ class CategoriaController{
         //Validación por si el cliente utiliza una coma en lugar de un punto en el decimal
         $margen = str_replace(',', '.', $margen);
         
-        //Validar que el nombre no llegue vacío
-        if($nombre === ''){
-            http_response_code(400);
-            echo json_encode(['ok' => false, 'error' => 'El nombre es obligatorio']);
-            return;
-        }
+        //Validaciones
+        $error = self::validar($nombre, $margen);
 
-        //Vaidar que el margen sea numérico y sea mayor a cero
-        if(!is_numeric($margen) || $margen < 0){
+        if($error !== null){
             http_response_code(400);
-            echo json_encode(['ok' => false, 'error' => 'El margen tiene que ser mayor a cero y debe ser numérico']);
+            echo json_encode(['ok' => false, 'error' => $error]);
             return;
         }
+    
 
 
         //Try catch para comprobar que no se esté guardando una categoría con un nombre ya existente
@@ -70,6 +66,18 @@ class CategoriaController{
             return;
         }
         echo json_encode($categoria);
+    }
+
+
+    //Método para validar nombre y margen de categorías
+    private static function validar($nombre, $margen){
+        if($nombre === ''){
+            return 'El nombre es oblitagorio';
+        }
+        if (!is_numeric($margen) || $margen < 0){
+            return 'El margen tiene que ser un número mayor o igual a cero';
+        }
+        return null; 
     }
 
 
