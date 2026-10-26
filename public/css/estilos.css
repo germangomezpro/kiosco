@@ -1,0 +1,36 @@
+/* Variables */
+
+:root {
+    --cartulina: #FFE14D;
+    --fibron: #000000;
+    --naranja: #FF6A13;
+    --papel: #FFFFFF;
+    --lapiz: #5C5C5C;
+    --rojo: #C8102E;
+
+    --fuente-cartel: 'Antonio', sans-serif;
+    --fuente-lectura: 'Atkinson Hyperlegible', sans-serif;
+}
+
+
+/* Base */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background: var(--papel);
+    color: var(--fibron);
+    font-family: var(--fuente-lectura);
+    font-size: 1.125rem;
+    line-height: 1.5;
+}
+
+h1 {
+    font-family: var(--fuente-cartel);
+    font-weight: 700;
+}
