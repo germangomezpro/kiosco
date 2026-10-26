@@ -33,8 +33,6 @@ class CategoriaController{
             return;
         }
     
-
-
         //Try catch para comprobar que no se esté guardando una categoría con un nombre ya existente
         try {
             $id = Categoria::crear($nombre, $margen);
@@ -48,13 +46,12 @@ class CategoriaController{
             throw $e;
         }
         
-
         http_response_code(201);
-
 
         //Por ahora imprime acá el resultado.
         echo json_encode(['ok' => true, 'id' => $id]);
     }
+
 
     //Metodo del controlador para mostrar la categoría por id
     public static function ver($id){
@@ -80,5 +77,42 @@ class CategoriaController{
         return null; 
     }
 
+
+    public static function modificar($id){
+        //Comprobar si la categoría existe
+        if(Categoria::buscar($id) === false){
+            http_response_code(404);
+            echo json_encode(['ok' => false, 'error' => 'La categoría no existe']);
+            return;
+        }
+        //Obtener el contenido del PUT
+        $datos = json_decode(file_get_contents('php://input'), true) ?? [];
+
+        $nombre = trim($datos['nombre'] ?? '');
+        $margen = trim($datos['margen'] ?? '');
+        $margen = str_replace(',', '.', $margen);
+
+        //Validamos nombre y margen con el metodo para validar creado
+        $error = self::validar($nombre, $margen);
+
+        if($error !== null){
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => $error]);
+            return;
+        }
+
+        //try catch para manejar la modificacion
+        try{
+            Categoria::modificar($id, $nombre, $margen);
+        }catch(PDOException $e){
+            if($e->errorInfo[1] === 1062){
+                http_response_code(409);
+                echo json_encode(['ok' => false, 'error' => 'Ya existe una categoría con ese nombre']);
+                return;
+            }
+            throw $e;
+        }
+        echo json_encode(['ok' => true]);
+    }
 
 }
