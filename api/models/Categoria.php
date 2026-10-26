@@ -27,4 +27,14 @@ class Categoria{
         return $pdo->lastInsertId();
     }
 
+    //Metodo para buscar
+    public static function buscar($id){
+        $pdo = Database::conectar();
+
+        $consulta = $pdo->prepare('SELECT id, nombre, margen FROM categoria WHERE id = :id');
+        $consulta->execute([':id' => $id]);
+
+        return $consulta->fetch();
+    }
+
 }

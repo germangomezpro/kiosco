@@ -60,5 +60,17 @@ class CategoriaController{
         echo json_encode(['ok' => true, 'id' => $id]);
     }
 
+    //Metodo del controlador para mostrar la categoría por id
+    public static function ver($id){
+        $categoria = Categoria::buscar($id);
+
+        if($categoria === false){
+            http_response_code(404);
+            echo json_encode(['ok' => false, 'error' => 'La categoría no existe']);
+            return;
+        }
+        echo json_encode($categoria);
+    }
+
 
 }

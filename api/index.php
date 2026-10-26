@@ -6,7 +6,12 @@ header('Content-Type: application/json; charset=utf-8');
 // Traemos el Controlador de Categorias
 require_once __DIR__ . '/controllers/CategoriaController.php';
 
+
+//Qué página se busca mostrar
 $recurso = $_GET['recurso'] ?? '';
+
+//Comprobamos si recibimos un id
+$id = $_GET['id'] ?? null;
 
 //Identificamos el método por el que llega el pedido
 $metodo = $_SERVER['REQUEST_METHOD'];
@@ -16,9 +21,16 @@ switch($recurso){
     case 'categorias':
 
         if($metodo === 'GET'){
-            // Si pidieron categorías, le pasamos el pedido al controlador de categorías.
-            // El controlador le pide los datos al modelo y responde en JSON.
-            CategoriaController::listar();
+            /* Si pidieron categorías, le pasamos el pedido al controlador de categorías.
+             El controlador le pide los datos al modelo y responde en JSON.*/
+
+            if($id === null){
+                CategoriaController::listar();  
+            }else{
+                CategoriaController::ver($id);
+            }
+
+
         }elseif($metodo === 'POST'){
             CategoriaController::crear();
         }else{
