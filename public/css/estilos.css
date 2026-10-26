@@ -85,3 +85,18 @@ h1 {
     line-height: 1;
     white-space:nowrap;
 }
+
+
+/* Mensajes */
+
+.mensaje {
+    margin: 1rem 0;
+    padding: 0.75rem 1rem;
+    border-left: 6px solid var(--fibron);
+    font-weight: 700;
+}
+
+.mensaje-error {
+    border-left-color: var(--rojo);
+    color: var(--rojo);
+}
