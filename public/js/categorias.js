@@ -8,14 +8,26 @@ async function cargarCategorias(){
     lista.replaceChildren();
 
     for(const categoria of categorias){
-        //Creamos los <li></li>
+        //Creamos los <li></li>, y le agregamos una clase
         const item = document.createElement('li');
-        //Le damos formato al margen
-        const margen = Number(categoria.margen).toLocaleString('es-AR');
+        item.className = 'lista-item';
 
-        //Metemos el contenido en los <li>
-        item.textContent = categoria.nombre + ' - ' + margen + '%';
+        //Creamos un span para el nombre
+        const nombre = document.createElement('span');
+        nombre.className = 'lista-nombre';
+        nombre.textContent = categoria.nombre;
+
+        //Le damos formato al margen y lo metemos en un span con una clase
+        const margen = document.createElement('span');
+        margen.className = 'lista-numero';
+        margen.textContent = Number(categoria.margen).toLocaleString('es-AR') + ' %';
+
+        //Metemos los span dentro de <li>
+        item.appendChild(nombre);
+        item.appendChild(margen);
+        //Y los li dentro de ul
         lista.appendChild(item);
+
     }
 }
 
