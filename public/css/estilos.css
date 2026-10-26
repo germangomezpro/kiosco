@@ -44,7 +44,8 @@ h1 {
 }
 
 .encabezado h1{
-    margin: 0;
+    max-width: 38rem;
+    margin: 0 auto;
     font-size: 3rem;
     line-height: 1;
 }
@@ -99,4 +100,59 @@ h1 {
 .mensaje-error {
     border-left-color: var(--rojo);
     color: var(--rojo);
+}
+
+
+/* Formularios */
+
+.formulario {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 7rem;
+    gap: 0.75rem;
+    padding: 1.25rem 0;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.campo label {
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: var(--lapiz);
+}
+
+.campo input {
+    font: inherit;
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    border: 2px solid var(--fibron);
+    border-radius: 0;
+    background: var(--papel);
+    color: var(--fibron);
+}
+
+.campo input:focus {
+    outline: 3px solid var(--naranja);
+    outline-offset: 2px;
+}
+
+/* Botones */
+
+.boton {
+    grid-column: 1 / -1;
+    padding: 0.625rem 1rem;
+    border: 2px solid var(--fibron);
+    background: var(--naranja);
+    color: var(--fibron);
+    font-family: var(--fuente-cartel);
+    font-weight: 700;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.boton:active {
+    transform: translateY(2px);
 }

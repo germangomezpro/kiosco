@@ -17,7 +17,25 @@
     </header>
 
     <main class="contenido">
+        <!-- Formulario para añadir categorías -->
+         <form id="form-categoria" class="formulario">
+            <div class="campo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required autocomplete="off">
+            </div>
+
+            <div class="campo">
+                <label for="margen">Margen (%)</label>
+                <input type="text" id="margen" name="margen" inputmode="decimal" required autocomplete="off">
+            </div>
+
+            <button type="submit" class="boton">Agregar categoría</button>
+        </form>
+
+        <!-- Mostrar mensaje si hay un error -->
         <p id="mensaje" class="mensaje" hidden></p>
+        
+        <!-- Listar categorías -->
         <ul id="lista-categorias" class="lista"></ul>
     </main>
 
