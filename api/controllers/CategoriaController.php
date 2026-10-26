@@ -69,7 +69,7 @@ class CategoriaController{
     //Método para validar nombre y margen de categorías
     private static function validar($nombre, $margen){
         if($nombre === ''){
-            return 'El nombre es oblitagorio';
+            return 'El nombre es obligatorio';
         }
         if (!is_numeric($margen) || $margen < 0){
             return 'El margen tiene que ser un número mayor o igual a cero';
