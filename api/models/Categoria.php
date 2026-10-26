@@ -17,7 +17,7 @@ class Categoria{
 
     }
 
-    //Método para agregar una cateogoría 
+    //Método para agregar una categoría 
     public static function crear($nombre, $margen){
         $pdo = Database::conectar();
 
@@ -44,6 +44,14 @@ class Categoria{
         $consulta = $pdo->prepare('UPDATE categoria SET nombre = :nombre, margen = :margen WHERE id = :id');
         $consulta->execute([':id' => $id, ':nombre' => $nombre, ':margen' => $margen]);
 
+    }
+
+    //Método para eliminar una categoría
+    public static function eliminar($id){
+        $pdo = Database::conectar();
+
+        $consulta = $pdo->prepare('DELETE FROM categoria WHERE id = :id');
+        $consulta->execute([':id' => $id]);
     }
 
 

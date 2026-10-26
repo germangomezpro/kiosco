@@ -77,7 +77,7 @@ class CategoriaController{
         return null; 
     }
 
-
+    // Método para modificar una categoría
     public static function modificar($id){
         //Comprobar si la categoría existe
         if(Categoria::buscar($id) === false){
@@ -115,4 +115,25 @@ class CategoriaController{
         echo json_encode(['ok' => true]);
     }
 
+    public static function eliminar($id){
+        $categoria = Categoria::buscar($id);
+
+        if($categoria === false){
+            http_response_code(404);
+            echo json_encode(['ok' => false, 'error' => 'La categoría no existe']);
+            return;
+        }
+
+        try{
+            Categoria::eliminar($id);
+        }catch(PDOException $e){
+            if($e->errorInfo[1] === 1451){
+                http_response_code(409);
+                echo json_encode(['ok' => false, 'error' => 'No se puede eliminar: la categoría tiene productos asociados' ]);
+                return;
+            }
+            throw $e;
+        }
+        echo json_encode(['ok' => true]);
+    }
 }
