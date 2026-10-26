@@ -40,11 +40,17 @@ switch($recurso){
             }else{
                 CategoriaController::modificar($id);
             }
+        }elseif($metodo === 'DELETE'){
+            if($id === null){
+                http_response_code(400);
+                echo json_encode(['ok' => false, 'error' => 'Falta el id de la categoría']);
+            }else{
+                CategoriaController::eliminar($id);
+            }
         }else{
             http_response_code(405);
             echo json_encode(['error' => 'Método no permitido']);
         }
-        
         
         break;
 
