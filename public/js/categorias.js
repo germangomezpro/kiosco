@@ -40,8 +40,39 @@ async function cargarCategorias(){
             margen.className = 'lista-numero';
             margen.textContent = Number(categoria.margen).toLocaleString('es-AR') + ' %';
 
+            //Acciones de la fila
+            const acciones = document.createElement('div');
+            acciones.className = 'lista-acciones';
+
+            //Botón Editar
+            const botonEditar = document.createElement('button');
+            botonEditar.type = 'button';
+            botonEditar.className = 'accion';
+            botonEditar.textContent = 'Editar';
+            botonEditar.addEventListener('click', function(){
+                console.log('Editar', categoria.id, categoria.nombre);
+            });
+
+            //Botón Eliminar
+            const botonEliminar = document.createElement('button');
+            botonEliminar.type = 'button';
+            botonEliminar.className = 'accion accion-peligro';
+            botonEliminar.textContent = 'Eliminar';
+            botonEliminar.addEventListener('click', function(){
+                console.log('Eliminar', categoria.id, categoria.nombre);
+            });
+
+            acciones.appendChild(botonEditar);
+            acciones.appendChild(botonEliminar);
+
+            //El nombre y las acciones, uno arriba del otro
+            const texto = document.createElement('div');
+            texto.className = 'lista-texto';
+            texto.appendChild(nombre);
+            texto.appendChild(acciones);
+            
             //Metemos los span dentro de <li>
-            item.appendChild(nombre);
+            item.appendChild(texto);
             item.appendChild(margen);
             //Y los li dentro de ul
             lista.appendChild(item);

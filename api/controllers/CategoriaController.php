@@ -48,7 +48,7 @@ class CategoriaController{
         
         http_response_code(201);
 
-        //Por ahora imprime acá el resultado.
+        //Respondemos a la vista con json
         echo json_encode(['ok' => true, 'id' => $id]);
     }
 
