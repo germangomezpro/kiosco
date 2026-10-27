@@ -66,3 +66,40 @@ function ocultarMensaje(){
 }
 
 cargarCategorias();
+
+// Enviar datos del formulario a la base de datos
+
+const formulario = document.getElementById('form-categoria');
+
+
+formulario.addEventListener('submit', async function (evento){
+    evento.preventDefault();
+    ocultarMensaje();
+
+    try{
+        const respuesta = await fetch ('../api/index.php?recurso=categorias',{
+            method: 'POST',
+            body: new FormData(formulario)
+        });
+
+        //Verificamos que la API no responda con error.
+        const resultado = await respuesta.json();
+
+        if(!respuesta.ok){
+            mostrarMensaje(resultado.error, 'error');
+            return;
+        }
+
+        //Reseteamos el formulario
+        formulario.reset();
+        //Deja el cursor en el nombre, listo para cargar la siguiente.
+        document.getElementById('nombre').focus();
+
+        //Mostramos las categorias con la nueva agregada
+        await cargarCategorias();
+        mostrarMensaje('Categoría agregada.', 'aviso');
+    }catch(error){
+        console.error(error);
+        mostrarMensaje('No se pudo guardar la categoría. Revise la conexión y pruebe nuevamente.', 'error');
+    }
+});
