@@ -59,7 +59,7 @@ async function cargarCategorias(){
             botonEliminar.className = 'accion accion-peligro';
             botonEliminar.textContent = 'Eliminar';
             botonEliminar.addEventListener('click', function(){
-                console.log('Eliminar', categoria.id, categoria.nombre);
+                eliminarCategoria(categoria);
             });
 
             acciones.appendChild(botonEditar);
@@ -70,7 +70,7 @@ async function cargarCategorias(){
             texto.className = 'lista-texto';
             texto.appendChild(nombre);
             texto.appendChild(acciones);
-            
+
             //Metemos los span dentro de <li>
             item.appendChild(texto);
             item.appendChild(margen);
@@ -90,10 +90,42 @@ function mostrarMensaje(texto, tipo){
     mensaje.textContent = texto;
     mensaje.className = 'mensaje mensaje-' + tipo;
     mensaje.hidden = false;
+    mensaje.scrollIntoView({ block: 'nearest' });
 }
 
 function ocultarMensaje(){
     document.getElementById('mensaje').hidden = true;
+}
+
+//Función para eliminar categoria
+async function eliminarCategoria(categoria){
+    //Preguntamos al usuario si está seguro
+    const seguro = confirm('¿Eliminar la categoría "' + categoria.nombre + '"?');
+
+    if(!seguro){
+        return;
+    }
+
+    ocultarMensaje();
+
+    try{
+        const respuesta = await fetch('../api/index.php?recurso=categorias&id=' + categoria.id, {
+            method: 'DELETE'
+        });
+
+        const resultado = await respuesta.json();
+
+        if(!respuesta.ok){
+            mostrarMensaje(resultado.error, 'error');
+            return;
+        }
+
+        await cargarCategorias();
+        mostrarMensaje('Categoría eliminada.', 'aviso');
+    }catch(error){
+        console.error(error);
+        mostrarMensaje('No se pudo eliminar la categoría. Revise la conexión y vuelva a intentar', 'error');
+    }
 }
 
 cargarCategorias();
