@@ -165,33 +165,65 @@ document.getElementById('cancelar-edicion').addEventListener('click', terminarEd
 
 
 formulario.addEventListener('submit', async function (evento){
+    // Que el formulario no recargue la página
     evento.preventDefault();
+    // Escondemos el mensaje del intento anterior
     ocultarMensaje();
 
-    try{
-        const respuesta = await fetch ('../api/index.php?recurso=categorias',{
-            method: 'POST',
-            body: new FormData(formulario)
-        });
+    // Anotamos si estamos editando (true) o agregando (false)
+    const editando = idEditando !== null;
 
-        //Verificamos que la API no responda con error.
+    // Preparamos los dos parámetros del fetch, para AGREGAR (POST)
+    let direccion = '../api/index.php?recurso=categorias';
+    let opciones = {
+        method: 'POST',
+        body: new FormData(formulario)
+    };
+
+    // Reemplazamos los parámetros si es que es una edición de categoría
+    if(editando){
+        //En este caso la dirección lleva el id de la categoria que se edita
+        direccion = direccion + '&id=' + idEditando;
+        opciones = {
+            method: 'PUT',
+            //Se avisa a la API que el cupero va en JSON
+            headers: {'Content-Type': 'application/json'},
+            //Armar el JSON con lo escrito en los campos
+            body: JSON.stringify({
+                nombre: document.getElementById('nombre').value,
+                margen: document.getElementById('margen').value,
+            })
+        };
+    }
+
+    try {
+        const respuesta = await fetch(direccion, opciones);
         const resultado = await respuesta.json();
 
+        //Mostrar si la API respondió con error y cortar
         if(!respuesta.ok){
             mostrarMensaje(resultado.error, 'error');
             return;
         }
 
-        //Reseteamos el formulario
-        formulario.reset();
-        //Deja el cursor en el nombre, listo para cargar la siguiente.
+        //Si salió bien, vaciar los campos y volver al modo agregar
+
+        terminarEdicion();
         document.getElementById('nombre').focus();
 
-        //Mostramos las categorias con la nueva agregada
+        //Volver a pedir las categorías ya con el cambio
         await cargarCategorias();
-        mostrarMensaje('Categoría agregada.', 'aviso');
-    }catch(error){
+
+        //El mensaje según lo que se hizo (editar o crear)
+        if(editando){
+            mostrarMensaje('Cambios guardados', 'aviso');
+        }else{
+            mostrarMensaje('Categoría agregada', 'aviso');
+        }
+        
+    } catch (error) {
+        //Sin conexión, o una respuesta que no es JSON
         console.error(error);
-        mostrarMensaje('No se pudo guardar la categoría. Revise la conexión y pruebe nuevamente.', 'error');
+        mostrarMensaje('No se pudo guardar la categoría. Revise la conexión y vuelva a intentar');    
     }
 });
