@@ -19,7 +19,7 @@ async function cargarCategorias(){
         //Vaciamos la lista
         lista.replaceChildren();
         
-        //Comprobamos si hay categorías cargadas
+        //Comprobamos si hay categorías cargadas en base de datos.
         if(categorias.length === 0){
             mostrarMensaje('Todavía no hay categorías cargadas.', 'aviso');
             return;
@@ -50,7 +50,7 @@ async function cargarCategorias(){
             botonEditar.className = 'accion';
             botonEditar.textContent = 'Editar';
             botonEditar.addEventListener('click', function(){
-                console.log('Editar', categoria.id, categoria.nombre);
+                empezarEdicion(categoria);
             });
 
             //Botón Eliminar
@@ -133,6 +133,35 @@ cargarCategorias();
 // Enviar datos del formulario a la base de datos
 
 const formulario = document.getElementById('form-categoria');
+
+let idEditando = null;
+
+function empezarEdicion(categoria){
+    idEditando = categoria.id;
+
+    document.getElementById('nombre').value = categoria.nombre;
+    document.getElementById('margen'). value = Number(categoria.margen).toLocaleString('es-AR');
+
+    document.getElementById('boton-guardar').textContent = 'Guardar cambios';
+    document.getElementById('cancelar-edicion').hidden = false;
+
+    ocultarMensaje();
+    formulario.scrollIntoView({block: 'nearest'});
+    document.getElementById('nombre').focus();
+}
+
+
+function terminarEdicion(){
+    idEditando = null;
+    formulario.reset();
+    
+    document.getElementById('boton-guardar').textContent = 'Agregar categoría';
+    document.getElementById('cancelar-edicion').hidden = true;
+
+}
+
+document.getElementById('cancelar-edicion').addEventListener('click', terminarEdicion);
+
 
 
 formulario.addEventListener('submit', async function (evento){

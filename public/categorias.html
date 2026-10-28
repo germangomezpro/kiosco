@@ -28,8 +28,10 @@
                 <label for="margen">Margen (%)</label>
                 <input type="text" id="margen" name="margen" inputmode="decimal" required autocomplete="off">
             </div>
-
-            <button type="submit" class="boton">Agregar categoría</button>
+            <!-- Botón para agregar categoría o editar -->
+            <button type="submit" id="boton-guardar" class="boton">Agregar categoría</button>
+            <!-- Botón para cancelar edición. Sólo aparecen si se está editando una categoría -->
+            <button type="button" id="cancelar-edicion" class="boton boton-secundario" hidden>Cancelar</button>
         </form>
 
         <!-- Mostrar mensaje si hay un error -->

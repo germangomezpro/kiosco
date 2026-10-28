@@ -167,6 +167,10 @@ h1 {
     min-width: 0;
 }
 
+.boton-secundario {
+    background: var(--papel);
+}
+
 .lista-acciones {
     display: flex;
     gap: 1.25rem;
