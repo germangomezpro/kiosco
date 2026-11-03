@@ -55,20 +55,38 @@ switch($recurso){
         break;
 
     case 'proveedores':
-        
-    if ($metodo === 'GET') {
-        if ($id === null) {
-            ProveedorController::listar();
+        if ($metodo === 'GET') {
+            // Consultar: la lista, o uno solo si vino el id
+            if ($id === null) {
+                ProveedorController::listar();
+            } else {
+                ProveedorController::ver($id);
+            }
+        } elseif ($metodo === 'POST') {
+            // Crear
+            ProveedorController::crear();
+        } elseif ($metodo === 'PUT') {
+            // Modificar: hace falta saber cuál
+            if ($id === null) {
+                http_response_code(400);
+                echo json_encode(['ok' => false, 'error' => 'Falta el id del proveedor']);
+            } else {
+                ProveedorController::modificar($id);
+            }
+        } elseif ($metodo === 'DELETE') {
+            // Eliminar: hace falta saber cuál
+            if ($id === null) {
+                http_response_code(400);
+                echo json_encode(['ok' => false, 'error' => 'Falta el id del proveedor']);
+            } else {
+                ProveedorController::eliminar($id);
+            }
         } else {
-            ProveedorController::ver($id);
+            // Cualquier otro método
+            http_response_code(405);
+            echo json_encode(['ok' => false, 'error' => 'Método no permitido']);
         }
-    } elseif ($metodo === 'POST') {
-        ProveedorController::crear();
-    } else {
-        http_response_code(405);
-        echo json_encode(['ok' => false, 'error' => 'Método no permitido']);
-    }
-    break;
+        break;
 
     default:
         http_response_code(404);
