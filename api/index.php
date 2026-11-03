@@ -3,9 +3,10 @@
 //Avisamos al cliente que la respuesta del servidor es un archivo de texto en formato JSON y codificado en UTF 8
 header('Content-Type: application/json; charset=utf-8');
 
-// Traemos el Controlador de Categorias, Proveedor,...
+// Traemos el Controlador de Categorias, Proveedor, Producto...
 require_once __DIR__ . '/controllers/CategoriaController.php';
 require_once __DIR__ . '/controllers/ProveedorController.php';
+require_once __DIR__ . '/controllers/ProductoController.php';
 
 //Qué página se busca mostrar
 $recurso = $_GET['recurso'] ?? '';
@@ -88,6 +89,19 @@ switch($recurso){
         }
         break;
 
+    case 'productos':
+        if($metodo === 'GET'){
+            if($id === null){
+                ProductoController::listar();
+            }else{
+                ProductoController::ver($id);
+            }
+        }else{
+            http_response_code(405);
+            echo json_encode(['ok' => false, 'error' => 'Método no permitido']);
+        }
+        break;
+        
     default:
         http_response_code(404);
         echo json_encode(['error'=> 'Recurso no encontrado']);
