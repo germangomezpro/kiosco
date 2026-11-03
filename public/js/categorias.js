@@ -85,17 +85,6 @@ async function cargarCategorias(){
 }
 
 
-function mostrarMensaje(texto, tipo){
-    const mensaje = document.getElementById('mensaje');
-    mensaje.textContent = texto;
-    mensaje.className = 'mensaje mensaje-' + tipo;
-    mensaje.hidden = false;
-    mensaje.scrollIntoView({ block: 'nearest' });
-}
-
-function ocultarMensaje(){
-    document.getElementById('mensaje').hidden = true;
-}
 
 //Función para eliminar categoria
 async function eliminarCategoria(categoria){

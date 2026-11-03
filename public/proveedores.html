@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proveedores</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@100..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <header class="encabezado">
+        <h1>Proveedores</h1>
+    </header>
+
+    <main class="contenido">
+        <!-- Formulario para agregar o editar un proveedor -->
+        <form id="form-proveedor" class="formulario formulario-simple">
+            <div class="campo">
+                <label for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" required autocomplete="off">
+            </div>
+
+            <div class="campo">
+                <label for="telefono">Teléfono</label>
+                <input type="text" id="telefono" name="telefono" inputmode="tel" autocomplete="off">
+            </div>
+
+            <div class="campo">
+                <label for="observaciones">Observaciones</label>
+                <textarea id="observaciones" name="observaciones" rows="2" placeholder="Por ejemplo, qué días pasa"></textarea>
+            </div>
+
+            <button type="submit" id="boton-guardar" class="boton">Agregar proveedor</button>
+            <button type="button" id="cancelar-edicion" class="boton boton-secundario" hidden>Cancelar</button>
+        </form>
+
+        <!-- Mensajes de éxito o error -->
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <!-- Lista de proveedores -->
+        <ul id="lista-proveedores" class="lista"></ul>
+    </main>
+
+    <script src="js/comun.js"></script>
+    <script src="js/proveedores.js"></script>
+</body>
+</html>

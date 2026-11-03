@@ -87,6 +87,17 @@ h1 {
     white-space:nowrap;
 }
 
+.lista-detalle {
+    margin: 0;
+    color: var(--lapiz);
+    font-size: 0.9375rem;
+    overflow-wrap: anywhere;
+}
+
+.lista-detalle a {
+    color: var(--fibron);
+}
+
 
 /* Mensajes */
 
@@ -112,6 +123,10 @@ h1 {
     padding: 1.25rem 0;
 }
 
+.formulario-simple {
+    grid-template-columns: minmax(0, 1fr);
+}
+
 .campo {
     display: flex;
     flex-direction: column;
@@ -124,7 +139,8 @@ h1 {
     color: var(--lapiz);
 }
 
-.campo input {
+.campo input,
+.campo textarea {
     font: inherit;
     width: 100%;
     padding: 0.625rem 0.75rem;
@@ -134,7 +150,12 @@ h1 {
     color: var(--fibron);
 }
 
-.campo input:focus {
+.campo textarea {
+    resize: vertical;
+}
+
+.campo input:focus,
+.campo textarea:focus {
     outline: 3px solid var(--naranja);
     outline-offset: 2px;
 }
