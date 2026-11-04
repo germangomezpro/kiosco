@@ -99,12 +99,20 @@ switch($recurso){
         }elseif($metodo === 'POST'){
             ProductoController::crear();
         }elseif($metodo === 'PUT'){
-             // Modificar: hace falta saber cuál
+             // Modificar: comprobamos si se pasó el id
             if ($id === null) {
                 http_response_code(400);
                 echo json_encode(['ok' => false, 'error' => 'Falta el id del producto']);
             } else {
                 ProductoController::modificar($id);
+            }
+        }elseif($metodo === 'DELETE'){
+            //Comprobamos si hay id
+            if ($id === null) {
+                http_response_code(400);
+                echo json_encode(['ok' => false, 'error' => 'Falta el id del producto']);
+            } else {
+                ProductoController::eliminar($id);
             }
         }else{
             http_response_code(405);

@@ -84,4 +84,13 @@ class Producto{
 
         $consulta->execute($datos);
     }
+
+    // Dar de baja un producto: No se borra la fila. Se marca como inactiva
+    public static function darDeBaja($id){
+        $pdo = Database::conectar();
+
+        $consulta = $pdo->prepare('UPDATE producto SET activo = 0 WHERE id = :id');
+        $consulta->execute([':id' => $id]);
+        
+    }
 }

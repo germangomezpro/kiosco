@@ -5,7 +5,7 @@ require_once __DIR__ . '/../models/Categoria.php';
 require_once __DIR__ . '/../models/Proveedor.php';
 
 class ProductoController{
-    // Variable para guardar el múltiplo para redondear los precios
+    //Constante: múltiplo al que se redondean los precios.
     private const REDONDEO = 50;
     
     //LISTAR TODOS
@@ -72,13 +72,32 @@ class ProductoController{
 
         // Calcular el precio de venta y lo agregamos a $datos
         $datos['precio_venta'] = self::precioDe($datos);
-
+        // Enviamos al modelo el id y la planilla de datos para agregar a Base
         Producto::modificar($id, $datos);
 
         echo json_encode(['ok' => true, 'precio_venta' => $datos['precio_venta']]);
-    }   
+    }
+    
+    // "Eliminar" (dar de baja)
 
+    public static function eliminar($id){
+        //Comprobar si existe el producto
+        if(Producto::buscar($id) === false){
+            http_response_code(404);
+            echo json_encode(['ok' => false, 'error' => 'El producto no existe']);
+            return;
+        }
 
+        // Enviamos el id al modelo para dar de baja
+        Producto::darDeBaja($id);
+
+        // Respondemos
+        echo json_encode(['ok' => true]);
+    }
+
+    // FUNCIONES DE APOYO
+
+    // Limpiar datos
     private static function leerDatos($entrada){
         $datos = [
             'nombre'        => trim($entrada['nombre'] ?? ''),
