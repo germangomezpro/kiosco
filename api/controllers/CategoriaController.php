@@ -4,6 +4,9 @@
 
 require_once __DIR__ . '/../models/Categoria.php';
 
+// El controlador de producto para actualizar precio por cambio de margen de categoría
+require_once __DIR__ . '/ProductoController.php';
+
 
 class CategoriaController{
 
@@ -112,7 +115,10 @@ class CategoriaController{
             }
             throw $e;
         }
-        echo json_encode(['ok' => true]);
+                // Si cambió el margen, los productos que usan el de la categoría tienen que actualizar su precio
+        $actualizados = ProductoController::recalcularCategoria($id, $margen);
+
+        echo json_encode(['ok' => true, 'precios_actualizados' => $actualizados]);
     }
 
     public static function eliminar($id){

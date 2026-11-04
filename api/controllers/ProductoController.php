@@ -95,6 +95,26 @@ class ProductoController{
         echo json_encode(['ok' => true]);
     }
 
+
+    // RECALCULAR los precios de una categoría (la llama CategoriaController cuando cambia el margen)
+
+    public static function recalcularCategoria($categoriaId, $margen){
+        // Traemos los productos sin margen propio
+        $productos = Producto::sinMargenPropio($categoriaId);
+        // Contador de precios cambiados
+        $cambiados = 0;
+        foreach ($productos as $producto){
+            $precio = self::calcularPrecio($producto['costo'], $margen);
+
+            // Solo guardamos y contamos si el precio cambió
+            if((float) $producto['precio_venta'] !== (float) $precio){
+                Producto::actualizarPrecio($producto['id'], $precio);
+                $cambiados++;
+            }
+        }
+        return $cambiados;
+    }
+
     // FUNCIONES DE APOYO
 
     // Limpiar datos

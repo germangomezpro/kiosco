@@ -91,6 +91,21 @@ class Producto{
 
         $consulta = $pdo->prepare('UPDATE producto SET activo = 0 WHERE id = :id');
         $consulta->execute([':id' => $id]);
-        
+
+    }
+
+       // Productos de una categoría que usan el margen de la categoría (no tienen margen propio)
+    public static function sinMargenPropio($categoriaId){
+        $pdo = Database::conectar();
+        $consulta = $pdo->prepare('SELECT id, costo, precio_venta FROM producto WHERE categoria_id = :categoria_id AND margen_propio IS NULL');
+        $consulta->execute(['categoria_id' => $categoriaId]);
+        return $consulta->fetchAll();
+    }
+
+    // Guardar el precio nuevo
+    public static function actualizarPrecio($id, $precio){
+        $pdo = Database::conectar();
+        $consulta = $pdo->prepare('UPDATE producto SET precio_venta = :precio WHERE id = :id');
+        $consulta->execute([':precio' => $precio, ':id' => $id]);
     }
 }
