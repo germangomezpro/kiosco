@@ -42,4 +42,17 @@ class Producto{
         $consulta->execute([':id' => $id]);
         return $consulta->fetch();
     }
+
+    // Crear un producto
+    public static function crear($datos){
+        $pdo = Database::conectar();
+
+        $consulta = $pdo->prepare('INSERT INTO producto
+            (nombre, categoria_id, proveedor_id, unidad_medida, costo, margen_propio, precio_venta, stock_actual, stock_minimo)
+            VALUES
+            (:nombre, :categoria_id, :proveedor_id, :unidad_medida, :costo, :margen_propio, :precio_venta, :stock_actual, :stock_minimo)');
+
+        $consulta->execute($datos);
+        return $pdo->lastInsertId();
+    }
 }

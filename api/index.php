@@ -96,12 +96,14 @@ switch($recurso){
             }else{
                 ProductoController::ver($id);
             }
+        }elseif($metodo === 'POST'){
+            ProductoController::crear();
         }else{
             http_response_code(405);
             echo json_encode(['ok' => false, 'error' => 'Método no permitido']);
         }
         break;
-        
+
     default:
         http_response_code(404);
         echo json_encode(['error'=> 'Recurso no encontrado']);
