@@ -29,23 +29,8 @@ class ProductoController{
     // Crear
 
     public static function crear(){
-        $datos = [
-            'nombre'        => trim($_POST['nombre'] ?? ''),
-            'categoria_id'  => trim($_POST['categoria_id'] ?? ''),
-            'proveedor_id'  => trim($_POST['proveedor_id'] ?? ''),
-            'unidad_medida' => trim($_POST['unidad_medida'] ?? ''),
-            'costo'         => self::numero($_POST['costo'] ?? ''),
-            'margen_propio' => self::numero($_POST['margen_propio'] ?? ''),
-            'stock_actual'  => self::numero($_POST['stock_actual'] ?? ''),
-            'stock_minimo'  => self::numero($_POST['stock_minimo'] ?? '')
-        ];
+        $datos = self::leerDatos($_POST);
 
-        //Si margen viene vacío, en la base se guarda como null
-        if($datos['margen_propio'] === ''){
-            $datos['margen_propio'] = null;
-        }
-
-        // Validamos los datos
         $error = self::validar($datos);
 
         if($error !== null){
@@ -54,7 +39,34 @@ class ProductoController{
             return;
         }
 
-        // Controlamos si llegó un margen propio del producto, si no guardamos en $margen el de la categoría
+        $datos['precio_venta'] = self::precioDe($datos);
+
+        $id = Producto::crear($datos);
+
+        http_response_code(201);
+        echo json_encode(['ok' => true, 'id' => $id, 'precio_venta' => $datos['precio_venta']]);
+    }
+
+        private static function leerDatos($entrada){
+        $datos = [
+            'nombre'        => trim($entrada['nombre'] ?? ''),
+            'categoria_id'  => trim($entrada['categoria_id'] ?? ''),
+            'proveedor_id'  => trim($entrada['proveedor_id'] ?? ''),
+            'unidad_medida' => trim($entrada['unidad_medida'] ?? ''),
+            'costo'         => self::numero($entrada['costo'] ?? ''),
+            'margen_propio' => self::numero($entrada['margen_propio'] ?? ''),
+            'stock_actual'  => self::numero($entrada['stock_actual'] ?? ''),
+            'stock_minimo'  => self::numero($entrada['stock_minimo'] ?? '')
+        ];
+
+        if($datos['margen_propio'] === ''){
+            $datos['margen_propio'] = null;
+        }
+
+        return $datos;
+    }
+
+    private static function precioDe($datos){
         if($datos['margen_propio'] !== null){
             $margen = $datos['margen_propio'];
         }else{
@@ -62,15 +74,7 @@ class ProductoController{
             $margen = $categoria['margen'];
         }
 
-        // Calculamos precio venta con la función
-
-        $datos['precio_venta'] = self::calcularPrecio($datos['costo'], $margen);
-
-        // Enviamos los datos al modelo
-        $id = Producto::crear($datos);
-
-        http_response_code(201);
-        echo json_encode(['ok' => true, 'id' => $id, 'precio_venta' => $datos['precio_venta']]);
+        return self::calcularPrecio($datos['costo'], $margen);
     }
 
     // Formato números
