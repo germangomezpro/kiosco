@@ -55,4 +55,33 @@ class Producto{
         $consulta->execute($datos);
         return $pdo->lastInsertId();
     }
+
+    // Modificar un producto
+
+    public static function modificar($id, $datos){
+        $pdo = Database::conectar();
+
+        // Si el costo cambió anotamos la fecha. Tiene que ir antes del Update principal
+
+        $consulta = $pdo->prepare('UPDATE producto SET costo_actualizado_en = NOW() WHERE id = :id AND costo <> :costo');
+        $consulta->execute(['id' => $id, 'costo' => $datos['costo']]);
+
+        // Guardamos los datos
+
+        $datos['id'] = $id;
+
+        $consulta = $pdo->prepare('UPDATE producto SET
+         nombre = :nombre,
+         categoria_id = :categoria_id,
+         proveedor_id = :proveedor_id,
+         unidad_medida = :unidad_medida,
+         costo = :costo,
+         margen_propio = :margen_propio,
+         precio_venta = :precio_venta,
+         stock_actual = :stock_actual,
+         stock_minimo = :stock_minimo
+         WHERE id = :id');
+
+        $consulta->execute($datos);
+    }
 }

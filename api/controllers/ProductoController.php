@@ -8,7 +8,7 @@ class ProductoController{
     // Variable para guardar el múltiplo para redondear los precios
     private const REDONDEO = 50;
     
-    //Listar
+    //LISTAR TODOS
     public static function listar(){
         echo json_encode(Producto::listar());
     }
@@ -26,7 +26,7 @@ class ProductoController{
         echo json_encode($producto);
     }
 
-    // Crear
+    // CREAR
 
     public static function crear(){
         $datos = self::leerDatos($_POST);
@@ -47,7 +47,39 @@ class ProductoController{
         echo json_encode(['ok' => true, 'id' => $id, 'precio_venta' => $datos['precio_venta']]);
     }
 
-        private static function leerDatos($entrada){
+    // MODIFICAR
+    
+     public static function modificar($id){
+        //Comprobar si existe el producto
+        if(Producto::buscar($id) === false){
+            http_response_code(404);
+            echo json_encode(['ok' => false, 'error' => 'El producto no existe']);
+            return;
+        }
+
+        //Abrimos el PUT
+        $entrada = json_decode(file_get_contents('php://input'), true) ?? [];
+        $datos = self::leerDatos($entrada);
+        $error = self::validar($datos);
+
+        //Comprobar errores
+
+        if($error !== null){
+            http_response_code(400);
+            echo json_encode(['ok' => false, 'error' => $error]);
+            return;
+        }
+
+        // Calcular el precio de venta y lo agregamos a $datos
+        $datos['precio_venta'] = self::precioDe($datos);
+
+        Producto::modificar($id, $datos);
+
+        echo json_encode(['ok' => true, 'precio_venta' => $datos['precio_venta']]);
+    }   
+
+
+    private static function leerDatos($entrada){
         $datos = [
             'nombre'        => trim($entrada['nombre'] ?? ''),
             'categoria_id'  => trim($entrada['categoria_id'] ?? ''),
@@ -66,10 +98,13 @@ class ProductoController{
         return $datos;
     }
 
+   
+    // Calcular el precio con margen propio o de categorías
     private static function precioDe($datos){
         if($datos['margen_propio'] !== null){
             $margen = $datos['margen_propio'];
         }else{
+            //Buscamos la categoría para extraer su margen
             $categoria = Categoria::buscar($datos['categoria_id']);
             $margen = $categoria['margen'];
         }

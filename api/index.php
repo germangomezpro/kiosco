@@ -98,6 +98,14 @@ switch($recurso){
             }
         }elseif($metodo === 'POST'){
             ProductoController::crear();
+        }elseif($metodo === 'PUT'){
+             // Modificar: hace falta saber cuál
+            if ($id === null) {
+                http_response_code(400);
+                echo json_encode(['ok' => false, 'error' => 'Falta el id del producto']);
+            } else {
+                ProductoController::modificar($id);
+            }
         }else{
             http_response_code(405);
             echo json_encode(['ok' => false, 'error' => 'Método no permitido']);
