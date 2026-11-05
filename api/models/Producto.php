@@ -35,6 +35,20 @@ class Producto{
         return $consulta->fetchAll();
     }
 
+    // Buscar producto por nombre, categoría o proveedor
+    public static function buscarPorTexto($texto){
+        $pdo = Database::conectar();
+        $consulta = $pdo->prepare('SELECT ' . self::COLUMNAS . ' FROM ' . self::TABLAS . '
+            WHERE p.activo = 1
+              AND (p.nombre LIKE :texto1 OR c.nombre LIKE :texto2 OR pr.nombre LIKE :texto3)
+            ORDER BY p.nombre');
+            
+        //Ponemos comodines al texto a buscar
+        $patron = '%'.$texto.'%';
+        $consulta->execute(['texto1' => $patron, 'texto2' => $patron, 'texto3' => $patron]);
+        return $consulta->fetchAll();
+    }   
+
     // Un producto por su id, o false si no existe
     public static function buscar($id){
         $pdo = Database::conectar();

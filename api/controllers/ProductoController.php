@@ -10,7 +10,16 @@ class ProductoController{
     
     //LISTAR TODOS
     public static function listar(){
-        echo json_encode(Producto::listar());
+        //Recibimos el parámetro "buscar" de GET
+        $texto = trim($_GET['buscar'] ?? '');
+
+        if($texto === ''){
+            // La lista completa
+            echo json_encode(Producto::listar());
+        }else{
+            // Solo los que coinciden
+            echo json_encode(Producto::buscarPorTexto($texto));
+        }
     }
 
     //Ver uno en específico
