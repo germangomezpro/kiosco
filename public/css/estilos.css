@@ -217,3 +217,23 @@ h1 {
     outline: 3px solid var(--naranja);
     outline-offset: 2px;
 }
+
+/* Buscador */
+
+.buscador {
+    padding: 1.25rem 0 0.5rem;
+}
+
+.buscador input[type="search"] {
+    font: inherit;
+    width: 100%;
+    padding: 0.625rem 0.75rem;
+    border: 2px solid var(--fibron);
+    border-radius: 0;
+    background: var(--papel);
+}
+
+.buscador input[type="search"]:focus {
+    outline: 3px solid var(--naranja);
+    outline-offset: 2px;
+}

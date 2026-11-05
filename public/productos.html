@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antonio:wght@100..700&family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+    <header class="encabezado">
+        <h1>Productos</h1>
+    </header>
+
+    <main class="contenido">
+        <!-- Buscador (se activa en la 23b) -->
+        <div class="buscador campo">
+            <label for="buscar">Buscar</label>
+            <input type="search" id="buscar" placeholder="Nombre, categoría o proveedor" autocomplete="off">
+        </div>
+
+        <!-- Mensajes de éxito o error -->
+        <p id="mensaje" class="mensaje" hidden></p>
+
+        <!-- Lista de productos -->
+        <ul id="lista-productos" class="lista"></ul>
+    </main>
+
+    <script src="js/comun.js"></script>
+    <script src="js/productos.js"></script>
+</body>
+</html>
